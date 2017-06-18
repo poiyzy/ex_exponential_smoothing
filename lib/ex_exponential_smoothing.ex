@@ -3,6 +3,10 @@ defmodule ExExponentialSmoothing do
   Documentation for ExExponentialSmoothing.
   """
 
+  use Supervisor
+
+  alias ExExponentialSmoothing.Single
+
   @doc """
   Hello world.
 
