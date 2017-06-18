@@ -6,6 +6,7 @@ defmodule ExExponentialSmoothing do
   use Supervisor
 
   alias ExExponentialSmoothing.Single
+  alias ExExponentialSmoothing.Double
 
   @doc """
   Hello world.
@@ -16,7 +17,8 @@ defmodule ExExponentialSmoothing do
       :world
 
   """
-  def hello do
-    :world
+  def start(_, [signal_mixing, trend_mixing]) do
+    Single.start_link(signal_mixing)
+    Double.start_link(signal_mixing, trend_mixing)
   end
 end

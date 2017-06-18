@@ -17,10 +17,26 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ex_exponential_smoothing](https://hexdocs.pm/ex_exponential_smoothing).
+In you `config.ex`
+
+```elixir
+config :ex_exponential_smoothing, My.Endpoint,
+  signal_mixing: 0.3,
+  double_mixing: 0.3
+```
+
+If you don't set this in your config file, `signal_mixing` default value will be `0.3`, and `double_mixing` default value will be `0.3`.
+
+## API
+
+* ExExponentialSmoothing.Single
+    * calculate_signal/1
+    * predict_next/0
+* ExExponentialSmoothing.Double
+    * calculate_signal/1
+    * predict_next/0
 
 ## TODO
 
+* Documentation.
 * Holt Winter.

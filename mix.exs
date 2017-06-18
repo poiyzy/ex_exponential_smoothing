@@ -15,7 +15,10 @@ defmodule ExExponentialSmoothing.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger]]
+    [
+      mod: {ExExponentialSmoothing, [Application.get_env(:ex_exponential_smoothing, :signal_mixing) || 0.3, Application.get_env(:ex_exponential_smoothing, :trend_mixing) || 0.3]},
+      extra_applications: [:logger]
+    ]
   end
 
   # Dependencies can be Hex packages:
