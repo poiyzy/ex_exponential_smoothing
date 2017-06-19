@@ -1,16 +1,20 @@
 defmodule ExExponentialSmoothing.Double do
   use GenServer
 
-  def start_link(signal_mixing, trend_mixing) do
-    GenServer.start_link(__MODULE__, {signal_mixing, trend_mixing, nil, 0}, name: :es_double_server)
+  def start_link(signal_mixing \\ 0.3, trend_mixing \\ 0.3) do
+    GenServer.start_link(__MODULE__, {signal_mixing, trend_mixing, nil, 0})
   end
 
-  def calculate_signal(value) do
-    GenServer.call(:es_double_server, {:new_comming_data, value})
+  def calculate_signal(pid, value) do
+    GenServer.call(pid, {:new_comming_data, value})
   end
 
-  def predict_next do
-    GenServer.call(:es_double_server, :predict_next)
+  def current_trend(pid) do
+    GenServer.call(pid, :get_current_trend)
+  end
+
+  def predict_next(pid) do
+    GenServer.call(pid, :predict_next)
   end
 
   def init({signal_mixing, trend_mixing, last_signal, last_trend}) do
@@ -28,10 +32,18 @@ defmodule ExExponentialSmoothing.Double do
     }
   end
 
+  def handle_call(:get_current_trend, _, {signal_mixing, trend_mixing, last_signal, last_trend}) do
+    {
+      :reply,
+      last_trend,
+      {signal_mixing, trend_mixing, last_signal, last_trend}
+    }
+  end
+
   def handle_call(:predict_next, _, {signal_mixing, trend_mixing, last_signal, last_trend}) do
     {
       :reply,
-      predict_next(last_signal, last_trend),
+      predict_next_value(last_signal, last_trend),
       {signal_mixing, trend_mixing, last_signal, last_trend}
     }
   end
@@ -56,7 +68,7 @@ defmodule ExExponentialSmoothing.Double do
     trend_mixing * (cur_signal - last_signal) + (1 - trend_mixing) * last_trend
   end
 
-  defp predict_next(last_signal, last_trend) do
+  defp predict_next_value(last_signal, last_trend) do
     last_signal + last_trend
   end
 end

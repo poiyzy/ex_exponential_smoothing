@@ -17,24 +17,22 @@ def deps do
 end
 ```
 
-In you `config.ex`
-
-```elixir
-config :ex_exponential_smoothing, My.Endpoint,
-  signal_mixing: 0.3,
-  double_mixing: 0.3
+```
+{:ok, single_pid} = ExExponentialSmoothing.Single.start_link(0.4) # signal_mixing
+{:ok, double_pid} = ExExponentialSmoothing.Double.start_link(0.4, 0.4) # signal_mixing, trend_mixing
 ```
 
-If you don't set this in your config file, `signal_mixing` default value will be `0.3`, and `double_mixing` default value will be `0.3`.
+If you don't pass any arguments to `Single.start_link/1` or `Double.start_link/2`, `signal_mixing` default value will be `0.3`, and `double_mixing` default value will be `0.3`.
 
 ## API
 
 * ExExponentialSmoothing.Single
-    * calculate_signal/1
-    * predict_next/0
+    * calculate_signal/2
+    * predict_next/1
 * ExExponentialSmoothing.Double
-    * calculate_signal/1
-    * predict_next/0
+    * calculate_signal/2
+    * predict_next/1
+    * current_trend/1
 
 ## TODO
 

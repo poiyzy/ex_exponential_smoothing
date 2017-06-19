@@ -3,7 +3,7 @@ defmodule ExExponentialSmoothing.Mixfile do
 
   def project do
     [app: :ex_exponential_smoothing,
-     version: "0.1.0",
+     version: "0.2.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -16,7 +16,7 @@ defmodule ExExponentialSmoothing.Mixfile do
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
     [
-      mod: {ExExponentialSmoothing, [Application.get_env(:ex_exponential_smoothing, :signal_mixing) || 0.3, Application.get_env(:ex_exponential_smoothing, :trend_mixing) || 0.3]},
+      # mod: {ExExponentialSmoothing, []},
       extra_applications: [:logger]
     ]
   end

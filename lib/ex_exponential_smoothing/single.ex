@@ -1,16 +1,16 @@
 defmodule ExExponentialSmoothing.Single do
   use GenServer
 
-  def start_link(signal_mixing) do
-    GenServer.start_link(__MODULE__, signal_mixing, name: :es_single_server)
+  def start_link(signal_mixing \\ 0.3) do
+    GenServer.start_link(__MODULE__, signal_mixing)
   end
 
-  def calculate_signal(value) do
-    GenServer.call(:es_single_server, {:new_comming_data, value})
+  def calculate_signal(pid, value) do
+    GenServer.call(pid, {:new_comming_data, value})
   end
 
-  def predict_next do
-    GenServer.call(:es_single_server, :predict_next)
+  def predict_next(pid) do
+    GenServer.call(pid, :predict_next)
   end
 
   def init(signal_mixing) do
@@ -30,7 +30,7 @@ defmodule ExExponentialSmoothing.Single do
   def handle_call(:predict_next, _, {signal_mixing, last_signal}) do
     {
       :reply,
-      predict_next(last_signal),
+      predict_next_value(last_signal),
       {signal_mixing, last_signal}
     }
   end
@@ -43,7 +43,7 @@ defmodule ExExponentialSmoothing.Single do
     signal_mixing * cur + (1 - signal_mixing) * last_signal
   end
 
-  defp predict_next(last_signal) do
+  defp predict_next_value(last_signal) do
     last_signal
   end
 end
