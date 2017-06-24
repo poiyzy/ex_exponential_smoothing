@@ -9,6 +9,10 @@ defmodule ExExponentialSmoothing.Single do
     GenServer.call(pid, {:new_comming_data, value})
   end
 
+  def current_signal(pid) do
+    GenServer.call(pid, :get_current_signal)
+  end
+
   def predict_next(pid) do
     GenServer.call(pid, :predict_next)
   end
@@ -24,6 +28,14 @@ defmodule ExExponentialSmoothing.Single do
       :reply,
       cur_signal,
       {signal_mixing, cur_signal}
+    }
+  end
+
+  def handle_call(:get_current_signal, _, {signal_mixing, last_signal}) do
+    {
+      :reply,
+      last_signal,
+      {signal_mixing, last_signal}
     }
   end
 

@@ -29,10 +29,12 @@ If you don't pass any arguments to `Single.start_link/1` or `Double.start_link/2
 * ExExponentialSmoothing.Single
     * calculate_signal/2
     * predict_next/1
+    * current_signal/1
 * ExExponentialSmoothing.Double
     * calculate_signal/2
     * predict_next/1
     * current_trend/1
+    * current_signal/1
 
 ## TODO
 

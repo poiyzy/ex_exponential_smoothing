@@ -9,6 +9,10 @@ defmodule ExExponentialSmoothing.Double do
     GenServer.call(pid, {:new_comming_data, value})
   end
 
+  def current_signal(pid) do
+    GenServer.call(pid, :get_current_signal)
+  end
+
   def current_trend(pid) do
     GenServer.call(pid, :get_current_trend)
   end
@@ -44,6 +48,14 @@ defmodule ExExponentialSmoothing.Double do
     {
       :reply,
       predict_next_value(last_signal, last_trend),
+      {signal_mixing, trend_mixing, last_signal, last_trend}
+    }
+  end
+
+  def handle_call(:get_current_signal, _, {signal_mixing, trend_mixing, last_signal, last_trend}) do
+    {
+      :reply,
+      last_signal,
       {signal_mixing, trend_mixing, last_signal, last_trend}
     }
   end
